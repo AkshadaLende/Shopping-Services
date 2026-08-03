@@ -7,12 +7,14 @@ import com.coding.tech.productservice.model.Product;
 import com.coding.tech.productservice.service.ProductService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/product")
@@ -21,6 +23,7 @@ public class ProductController {
 
 private final ProductService productService;
 
+    private static final Logger logger = LoggerFactory.getLogger(LoggerFactory.class);
    /* public ProductController(ProductService productService) {
         this.productService = productService;
     }*/
@@ -34,6 +37,7 @@ private final ProductService productService;
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createProduct(@RequestBody ProductRequest productRequest){
+        logger.info("Inside createProduct method");
         productService.createProduct(productRequest);
     }
 

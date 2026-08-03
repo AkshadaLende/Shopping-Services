@@ -1,4 +1,4 @@
-package com.coding.tech;
+package com.coding.tech.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +19,16 @@ public class LoggingFilters implements GlobalFilter, Ordered {
        logger.info("Incoming request");
        logger.info("Method : {}", exchange.getRequest().getMethod());
        logger.info("Path : {}", exchange.getRequest().getURI());
+
+        String correlationId =
+                exchange.getRequest()
+                        .getHeaders()
+                        .getFirst("X-Correlation-ID");
+
+        logger.info("[{}] {} {}",
+                correlationId,
+                exchange.getRequest().getMethod(),
+                exchange.getRequest().getURI());
        return chain.filter(exchange).then(
                Mono.fromRunnable(() -> logger.info("Response status : {}", exchange.getResponse().getStatusCode()))
        );
