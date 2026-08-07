@@ -32,14 +32,19 @@ private final ProductService productService;
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProducts(){
-        return productService.getAllProducts();
+
+       // return productService.getAllProducts();
+        throw new RuntimeException("DataBase Is down");
     }
+
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createProduct(@RequestBody ProductRequest productRequest){
         logger.info("Inside createProduct method");
         productService.createProduct(productRequest);
     }
+
 
    /* @PostMapping("/filter")
     public List<Product> filterByPrice(@RequestBody Product product){
