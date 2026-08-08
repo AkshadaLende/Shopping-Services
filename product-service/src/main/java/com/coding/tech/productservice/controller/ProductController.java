@@ -33,8 +33,8 @@ private final ProductService productService;
     @ResponseStatus(HttpStatus.OK)
     public List<ProductResponse> getAllProducts(){
 
-       // return productService.getAllProducts();
-        throw new RuntimeException("DataBase Is down");
+        return productService.getAllProducts();
+     //   throw new RuntimeException("DataBase Is down");
     }
 
 
