@@ -29,7 +29,7 @@ pipeline {
 
         stage('Docker Build') {
              steps {
-                sh 'docker build -t shopping-services/product-service:${BUILD_NUMBER} ./product-service'
+                 sh 'docker build -t shopping-services/product-service:${BUILD_NUMBER} -f product-service/Dockerfile .'
              }
         }
     }
