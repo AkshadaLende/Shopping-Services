@@ -28,9 +28,11 @@ pipeline {
         }
 
         stage('Docker Build') {
-             steps {
-                sh 'docker build -t shopping-services/product-service:${BUILD_NUMBER} ./ProductService'
-             }
+              steps {
+                     sh 'pwd'
+                     sh 'ls -la'
+                     sh 'find . -maxdepth 3 -name Dockerfile -print'
+                 }
         }
     }
 
