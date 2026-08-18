@@ -1,6 +1,7 @@
 package com.programmingtechie.inventoryservice.controller;
 
 
+import com.programmingtechie.inventoryservice.dto.InventoryReleaseRequest;
 import com.programmingtechie.inventoryservice.dto.InventoryReserveRequest;
 import com.programmingtechie.inventoryservice.dto.InventoryResponse;
 import com.programmingtechie.inventoryservice.service.InventoryService;
@@ -32,5 +33,11 @@ public class InventoryController {
     @PostMapping("/reserve")
     public ResponseEntity<List<InventoryResponse>> reserve(@RequestBody InventoryReserveRequest inventoryReserveRequest) {
         return ResponseEntity.ok(inventoryService.reserve(inventoryReserveRequest));
+    }
+
+    @PostMapping("/release")
+    public ResponseEntity<Void> release(@RequestBody InventoryReleaseRequest request) {
+        inventoryService.release(request);
+        return ResponseEntity.ok().build();
     }
 }

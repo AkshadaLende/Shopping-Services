@@ -1,9 +1,6 @@
 package com.programmingtechie.inventoryservice.service;
 
-import com.programmingtechie.inventoryservice.dto.InventoryReserveRequest;
-import com.programmingtechie.inventoryservice.dto.InventoryResponse;
-import com.programmingtechie.inventoryservice.dto.OrderLineItemsDto;
-import com.programmingtechie.inventoryservice.dto.TransactionStatus;
+import com.programmingtechie.inventoryservice.dto.*;
 import com.programmingtechie.inventoryservice.model.Inventory;
 import com.programmingtechie.inventoryservice.model.InventoryTransaction;
 import com.programmingtechie.inventoryservice.repository.InventoryRepository;
@@ -27,9 +24,6 @@ public class InventoryService {
     private final InventoryRepository inventoryRepository;
     private final InventoryTransactionRepository inventoryTransactionRepository;
 
-    // public  InventoryService(InventoryRepository inventoryRepository){
-    //    this.inventoryRepository=inventoryRepository;
-    //  }
     @Transactional(readOnly = true)
     public List<InventoryResponse> isStock(List<String> skucode) {
         return inventoryRepository.findBySkuCodeIn(skucode).stream()
@@ -76,5 +70,30 @@ public class InventoryService {
         inventory.setReservedQuantity(inventory.getReservedQuantity() + item.getQuantity());
         inventoryRepository.save(inventory);
         return new InventoryResponse(item.getSkuCode(), true);
+    }
+
+    @Transactional
+    public void release(InventoryReleaseRequest request) {
+        // Idempotency: don't release twice for the same saga
+        Optional<InventoryTransaction> bySagaId = inventoryTransactionRepository.findBySagaId(request.getSagaId());
+        if (bySagaId.isPresent() && bySagaId.get().getStatus() == TransactionStatus.RELEASED) {
+            return;
+        }
+
+        request.getItems().forEach(this::releaseSingleItem);
+        bySagaId.ifPresent(txn -> {
+            txn.setStatus(TransactionStatus.RELEASED);
+            inventoryTransactionRepository.save(txn);
+        });
+    }
+
+    private void releaseSingleItem(OrderLineItemsDto item) {
+
+        Inventory inventory = inventoryRepository.findBySakuCodeForUpdate(item.getSkuCode()).
+                orElseThrow(() -> new IllegalArgumentException("Unknown Skucode" + item.getSkuCode()));
+        inventory.setAvailableQuantity(inventory.getAvailableQuantity() + item.getQuantity());
+        inventory.setReservedQuantity(inventory.getReservedQuantity() - item.getQuantity());
+
+        inventoryRepository.save(inventory);
     }
 }
