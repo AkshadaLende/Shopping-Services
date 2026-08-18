@@ -1,6 +1,6 @@
 package com.coding.tech.orderservice.Repository;
 
-import com.coding.tech.orderservice.model.Order;
+import com.coding.tech.orderservice.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

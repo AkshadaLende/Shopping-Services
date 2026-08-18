@@ -1,4 +1,4 @@
-package com.coding.tech.orderservice.model;
+package com.coding.tech.orderservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,8 +20,19 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long Id;
+
+    @Column(unique = true, nullable = false)
     private String OrderNumber;
-    @OneToMany(cascade=CascadeType.ALL)
+
+    @OneToMany(mappedBy = "order", cascade=CascadeType.ALL, orphanRemoval = true)
     private List<OrderLineItems> orderLineItems;
+
+    private Long userId;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
+    private LocalDateTime createdDt;
+    private LocalDateTime updatedDt;
 
 }

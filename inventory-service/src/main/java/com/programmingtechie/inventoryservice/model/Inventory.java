@@ -18,7 +18,11 @@ public class Inventory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String skuCode;
-    private Integer quantity;
+    private Integer availableQuantity;
+    private Integer reservedQuantity;
+
+    @Version // optimistic locking fallback / concurrency safety net
+    private Long version;
 
 
 }

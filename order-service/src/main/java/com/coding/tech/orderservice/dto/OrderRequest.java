@@ -10,5 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderRequest {
 
-   private List<OrderLineItemsDto> orderLineItemsDto;
+   private Long userId;
+   private List<OrderLineItemsDto> orderLineItemsDtoList;
+
 }

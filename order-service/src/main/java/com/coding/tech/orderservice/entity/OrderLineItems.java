@@ -1,4 +1,4 @@
-package com.coding.tech.orderservice.model;
+package com.coding.tech.orderservice.entity;
 
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
@@ -17,9 +17,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class OrderLineItems {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
     private String skuCode;
     private BigDecimal price;
     private Integer quantity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private  Order order;
 }
