@@ -7,6 +7,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.2.0</version>
+        <relativePath/>
        <!-- lookup parent from repository -->
     </parent>
     <groupId>org.coding.tech</groupId>
@@ -20,6 +21,8 @@
         <module>discovery-server</module>
         <module>api-gateway</module>
         <module>AuthService</module>
+        <module>paymentservice</module>
+        <module>notificationservice</module>
     </modules>
 
     <properties>
